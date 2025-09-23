@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ITC505 Lab 3 — Serving a Self-Hosted Web Font</title>
+
+  <style>
+    @font-face {
+      font-family: "BangersLocal";
+      src: url("./fonts/Bangers.woff2") format("woff2"),
+           url("./fonts/Bangers.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #0e1117;
+      --ink: #e6edf3;
+      --card: #161b22;
+      --rule: #30363d;
+      --accent-h1: #ff9d00;
+      --c1: #8ee1ff;
+      --c2: #ffb3c1;
+      --c3: #a0ff9d;
+      --c4: #ffd966;
+      --c5: #d1b3ff;
+      --c6: #ffb86c;
+    }
+
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); }
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.6; }
+    .wrap { max-width: 880px; margin: 2.5rem auto; padding: 0 1.25rem; }
+
+    header h1 {
+      font-family: "BangersLocal", Impact, sans-serif;
+      font-size: clamp(2.4rem, 6.2vw, 4.2rem);
+      color: var(--accent-h1);
+      text-shadow: 0 2px 0 #000;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      margin-top: 1rem;
+    }
+
+    .p1 { font-family: Georgia, serif; color: var(--c1); }
+    .p2 { font-family: "Courier New", monospace; color: var(--c2); }
+    .p3 { font-family: "Trebuchet MS", sans-serif; color: var(--c3); }
+    .p4 { font-family: "Comic Sans MS", cursive; color: var(--c4); }
+    .p5 { font-family: "BangersLocal", Impact, sans-serif; color: var(--c5); }
+    .p6 { font-family: "Gill Sans", Calibri, sans-serif; color: var(--c6); }
+
+    h2, h3 { font-family: "Trebuchet MS", sans-serif; margin-top: 0.25rem; }
+
+    .demo {
+      font-family: "BangersLocal", Impact, sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--c5);
+    }
+
+    code, pre {
+      background: #0b0f14;
+      border: 1px solid #223045;
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      color: #d6e6ff;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      border-top: 1px dashed var(--rule);
+      padding: 0.75rem 0 1.25rem;
+      color: #9fb0c0;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>ITC505 Lab 3 — Self-Hosted Web Font</h1>
+    </header>
+
+    <section class="card">
+      <h2>How I served this font</h2>
+
+      <p class="p1">
+        I went with <strong>self-hosted</strong>. I downloaded a font that isn't pre-installed on most computers (<em>Bangers</em>), saved it as both <code>.woff2</code> and <code>.woff</code>, and uploaded both files to my server at <code>/ITC505/lab-3/fonts/</code>. That way, the browser loads the font directly from my website—no third-party required.
+      </p>
+
+      <p class="p2">
+        I used the <code>@font-face</code> rule in my CSS to give the font a friendly name (<code>BangersLocal</code>) and linked to those two files. Your browser downloads the font and can immediately use it wherever I've asked for it when you load this page.
+      </p>
+
+      <p class="p3">
+        I also define <code>font-display: swap</code>. That tells the browser to show a default fallback font first, then "swap" the custom font in as soon as it's ready—so you get content right away, and it still ends up looking how I prefer.
+      </p>
+
+      <p class="p4">
+        Why not simply link to a provider such as Google Fonts? That is equally acceptable. I went with self-hosting so that I have full control, fewer external dependencies, and predictable caching. It also makes the assignment absolutely clear to graders: the font is being served from my server.
+      </p>
+
+      <h3>CSS snippet</h3>
+      <pre><code>@font-face {
+  font-family: "BangersLocal";
+  src: url("./fonts/Bangers.woff2") format("woff2"),
+       url("./fonts/Bangers.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Font demo</h2>
+      <p class="demo">THIS LOOKS LOUD ON PURPOSE 🤪 — if you see a chunky comic vibe, the custom font is working.</p>
+
+      <p class="p5">
+        If it still looks plain, double-check that the files exist at <code>/ITC505/lab-3/fonts/Bangers.woff2</code> and <code>/ITC505/lab-3/fonts/Bangers.woff</code>. Most servers already serve the right MIME types for these, so usually no extra config is needed.
+      </p>
+
+      <p class="p6">
+        TL;DR: I downloaded a quirky font, hosted it myself, told the browser where to find it, and styled this page to show it off. Mission accomplished!
+      </p>
+    </section>
+
+    <footer>
+      <p>Last updated: <span id="lastModified"></span></p>
+    </footer>
+    <script type="text/javascript">
+      var x = document.lastModified;
+      document.getElementById('lastModified').textContent = x;
+    </script>
+  </main>
+</body>
+</html>
