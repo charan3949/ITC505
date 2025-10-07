@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab 4 — Prettify Your Essay (Sai Charan Kalagoni)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="ITC 505 Lab 4: Presentational CSS applied to my Lab 2 essay with an addendum explaining stylistic choices." />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container flow">
+      <p class="eyebrow">ITC 505 — Lab 4</p>
+      <h1 class="page-title">Prettify Your Essay</h1>
+      <p class="subtitle">Applying presentational CSS and documenting stylistic choices</p>
+    </div>
+  </header>
+
+  <main class="container flow">
+    <section aria-labelledby="essay-title" class="card flow">
+      <h2 id="essay-title">Characterization of Nsp3 - PLOS ONE</h2>
+      <p class="lede">This page contains my Lab 2 essay rendered with modern CSS styling for improved readability and aesthetics. The content remains semantically identical to the original.</p>
+
+      <article class="essay flow">
+        <header>
+          <h1>Characterization of Nsp3</h1>
+          <p><strong>Authors:</strong> Lee A. Armstrong, Sven M. Lange, Virginia De Cesare, Stephen P. Matthews, Raja Sekar Nirujogi, Isobel Cole, Rachel Toth, Paul Davies, Yogesh Kulathu</p>
+          <p><strong>Published:</strong> July 16, 2021</p>
+          <p><strong>Journal:</strong> PLOS ONE</p>
+          <p><a href="https://doi.org/10.1371/journal.pone.0253364">DOI: 10.1371/journal.pone.0253364</a></p>
+        </header>
+
+        <section id="abstract">
+          <h2>Abstract</h2>
+          <p>Coronavirus non-structural protein 3 (Nsp3) is a large multidomain protein essential for viral replication. Our study biochemically characterizes Nsp3 and its papain-like protease (PLpro) domain, compares enzymatic activity, and screens inhibitors including nanobodies as potential therapeutic tools.</p>
+        </section>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>Post-translational modifications such as ubiquitination and ISGylation are critical in host immune responses. PLpro antagonizes host ubiquitylation and ISGylation, subverting antiviral signaling and immune defense, making it a potential drug target for COVID-19.</p>
+        </section>
+
+        <section id="methods">
+          <h2>Materials and Methods</h2>
+          <p>We expressed and purified recombinant SARS-CoV-2 Nsp3 and PLpro variants, performed enzymatic assays, used MALDI-TOF high-throughput screening to evaluate 1971 FDA-approved compounds, and developed inhibitory nanobodies.</p>
+        </section>
+
+        <section id="results">
+          <h2>Results</h2>
+          <p>Extended Nsp3 acts as a more active protease than PLpro alone, efficiently cleaving ISG15, K48-linked chains, and viral polyprotein substrates. Despite initial in vitro inhibition, none of the FDA-approved compounds showed antiviral efficacy. Novel nanobodies, however, effectively inhibited PLpro activity.</p>
+        </section>
+
+        <section id="discussion">
+          <h2>Discussion</h2>
+          <p>Our findings highlight Nsp3’s central role in SARS-CoV-2 replication and immune evasion. While small molecule inhibitors lacked efficacy, nanobody-based inhibitors provide a promising therapeutic strategy.</p>
+        </section>
+
+        <section id="references">
+          <h2>References</h2>
+          <ol>
+            <li>Wu A, Peng Y, Huang B, Ding X, Wang X, Niu P, et al. Genome Composition and Divergence of the Novel Coronavirus (2019-nCoV). <em>Cell Host Microbe</em>. 2020. <a href="https://doi.org/10.1016/j.chom.2020.02.001">DOI</a></li>
+            <li>Angelini MM, Akhlaghpour M, Neuman BW, Buchmeier MJ. SARS-CoV nonstructural proteins induce double-membrane vesicles. <em>MBio</em>. 2013. <a href="https://doi.org/10.1128/mBio.00524-13">DOI</a></li>
+            <li>Thoms M, Buschauer R, Ameismeier M, et al. Structural basis for translational shutdown by Nsp1. <em>Science</em>. 2020. <a href="https://doi.org/10.1126/science.abc8665">DOI</a></li>
+          </ol>
+        </section>
+
+        <footer>
+          <p><strong>Acknowledgments:</strong> We thank collaborators and dedicate this work to the memory of Anthony Hope.</p>
+        </footer>
+      </article>
+    </section>
+
+    <section aria-labelledby="addendum-title" class="card addendum flow">
+      <h2 id="addendum-title">Addendum: Stylistic Choices</h2>
+      <p><strong>Font Choices:</strong> I used a modern sans-serif font for body text to ensure readability and a serif font for headings to reflect an academic tone. This contrast guides readers' attention naturally through the essay structure.</p>
+      <p><strong>Text and Heading Sizes:</strong> Headings use scalable <code>clamp()</code> sizing to remain consistent across different screen resolutions. The main text size is slightly larger than default for comfortable long-form reading.</p>
+      <p><strong>Color Palette:</strong> The color scheme features a dark background with light text for reduced eye strain, complemented by a blue accent for interactive elements such as links.</p>
+      <p><strong>Margins and Padding:</strong> The document follows a 70-character line width for optimal readability. Consistent vertical spacing separates sections clearly, enhancing flow and visual hierarchy.</p>
+      <p><strong>Layout and Structure:</strong> The essay and addendum are presented in distinct card sections with soft shadows and rounded corners, improving focus and separating content visually.</p>
+
+      <h3>HTML Abuse</h3>
+      <ul>
+        <li>Ensured the essay title uses <code>&lt;h1&gt;</code> instead of smaller headings purely for appearance; CSS now controls the visual size.</li>
+        <li>Replaced presentational tags like <code>&lt;b&gt;</code> with semantic <code>&lt;strong&gt;</code> or <code>&lt;em&gt;</code> for emphasis.</li>
+        <li>Removed all extra <code>&lt;br&gt;</code> elements used for spacing and replaced them with CSS-based margins.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Last updated: <span id="lastModified"></span></p>
+    </div>
+  </footer>
+  <script type="text/javascript">
+    var x = document.lastModified;
+    document.getElementById('lastModified').textContent = x;
+  </script>
+</body>
+</html>
