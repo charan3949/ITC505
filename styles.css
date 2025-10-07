@@ -1,0 +1,120 @@
+/* ITC 505 Lab 4 — styles.css
+   Author: Sai Charan Kalagoni
+   Notes: Designed for laptop-sized screens or larger; mobile optimizations not required by spec.
+*/
+
+/* 1) Design tokens */
+:root {
+  --bg: #0f1115;
+  --surface: #141821;
+  --text: #e6e8ee;
+  --muted: #b6bcc8;
+  --accent: #7aa2ff;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 8px 28px rgba(0,0,0,0.28);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+}
+
+/* 2) Global base */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: radial-gradient(1400px 700px at 15% -10%, #171b26 0%, #0f1115 60%) fixed;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.container {
+  width: min(70ch, 90vw);
+  margin-inline: auto;
+}
+
+.flow > * + * { margin-top: var(--s-4); }
+
+/* 3) Typography */
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  letter-spacing: 0.2px;
+  color: var(--text);
+  margin: 0 0 var(--s-3) 0;
+}
+
+.page-title {
+  font-size: clamp(1.9rem, 2.2vw + 1rem, 2.6rem);
+}
+
+h2 { font-size: clamp(1.25rem, 1.4vw + 0.9rem, 1.6rem); }
+h3 { font-size: clamp(1.05rem, 1vw + 0.6rem, 1.25rem); }
+
+p, li { font-size: 1.05rem; color: var(--text); }
+.lede { color: var(--muted); }
+
+/* 4) Links */
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover { text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* 5) Header */
+.site-header {
+  padding: var(--s-6) 0 var(--s-5);
+  background: linear-gradient(180deg, rgba(122,162,255,0.08), rgba(20,24,33,0));
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-5);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: var(--s-2);
+}
+
+/* 6) Card surfaces */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: var(--s-6);
+  box-shadow: var(--shadow);
+}
+
+.addendum { margin-top: var(--s-6); }
+
+/* 7) Lists and spacing */
+ul { padding-left: 1.25rem; }
+li + li { margin-top: var(--s-2); }
+
+/* 8) Footer */
+.site-footer {
+  margin-top: var(--s-7);
+  padding: var(--s-5) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
