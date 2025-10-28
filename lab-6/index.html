@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITC 505 – Lab 6: Holy Grail + JavaScript</title>
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: #151823;
+      --panel-2: #1b2030;
+      --text: #eaf0f6;
+      --muted: #b8c2cc;
+      --accent: #7dd3fc;
+      --border: #263045;
+      --success: #86efac;
+      --danger: #fca5a5;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: #0b0c10;
+      padding: 10px;
+    }
+
+    /* Holy Grail Layout */
+    .layout{
+      display: grid;
+      grid-template-columns: 200px 1fr 250px;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header header header"
+        "sidebar-left content sidebar-right"
+        "footer footer footer";
+      gap: 10px;
+      min-height: 100vh;
+    }
+
+    header{
+      grid-area: header;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .sidebar-left{
+      grid-area: sidebar-left;
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .sidebar-right{
+      grid-area: sidebar-right;
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .content{
+      grid-area: content;
+      background: var(--panel-2);
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    footer{
+      grid-area: footer;
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .menu li{
+      list-style: none;
+      margin: 8px 0;
+    }
+    .menu a{
+      text-decoration: none;
+      color: var(--text);
+      background: #1b2030;
+      padding: 8px 10px;
+      display: block;
+      border-radius: 5px;
+    }
+
+    .menu a:hover{
+      background: #2b3145;
+    }
+
+    .tool{
+      background: #1b2030;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, button{
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+    }
+
+    button{
+      background: #111b33;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    button:hover{
+      background: #1e2b49;
+    }
+
+    .output{
+      background: #0b101c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 40px;
+      font-family: monospace;
+    }
+
+    @media (max-width: 800px){
+      .layout{
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "content"
+          "sidebar-left"
+          "sidebar-right"
+          "footer";
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+
+    <!-- Header -->
+    <header>
+      <h1>Holy Grail Layout + JavaScript Demo</h1>
+      <p>ITC 505 - Lab 6</p>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <nav class="sidebar-left">
+      <h3>Menu</h3>
+      <ul class="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Bubble Sort Playground</h2>
+      <p>Enter comma-separated numbers and click Sort:</p>
+
+      <div class="tool">
+        <label for="numbers">Numbers:</label><br>
+        <input type="text" id="numbers" placeholder="e.g. 5,2,9,1,6"><br>
+        <button id="sortBtn">Sort</button>
+        <button id="randomBtn">Random</button>
+        <button id="clearBtn">Clear</button><br><br>
+        <label><input type="checkbox" id="showSteps" checked> Show steps</label>
+      </div>
+
+      <div class="output" id="output">Result will appear here...</div>
+      <ol id="steps"></ol>
+    </main>
+
+    <!-- Advertisement Sidebar -->
+    <aside class="sidebar-right">
+      <h3>Sponsored</h3>
+      <a href="https://www.amazon.com/dp/B08N5WRWNW" target="_blank">
+        <img src="https://m.media-amazon.com/images/I/61O45C5qASL._AC_SL1500_.jpg" 
+             alt="Amazon Product" style="width:100%;border-radius:10px;">
+      </a>
+      <p>Click to view product on Amazon.</p>
+    </aside>
+
+    <!-- Footer -->
+    <footer>
+      <h3>Addendum</h3>
+      <p><b>Problem:</b> Implemented Bubble Sort to sort a list of numbers entered by the user.</p>
+      <p><b>Solution:</b> Used JavaScript to parse input, perform sorting, and display results dynamically.</p>
+      <p><b>Difficulties:</b> Input parsing errors fixed by filtering non-numeric values and handling spaces.</p>
+      <p>Last updated: <span id="lastModified"></span></p>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Section -->
+  <script>
+    // Update last modified date
+    document.getElementById('lastModified').textContent = document.lastModified;
+
+    const sortBtn = document.getElementById('sortBtn');
+    const randomBtn = document.getElementById('randomBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const output = document.getElementById('output');
+    const stepsList = document.getElementById('steps');
+    const showSteps = document.getElementById('showSteps');
+
+    function parseNumbers(str) {
+      return str.split(',')
+                .map(s => s.trim())
+                .filter(s => s !== '' && !isNaN(s))
+                .map(Number);
+    }
+
+    function bubbleSort(arr) {
+      let steps = [];
+      let a = [...arr];
+      for (let i = 0; i < a.length - 1; i++) {
+        for (let j = 0; j < a.length - i - 1; j++) {
+          if (a[j] > a[j + 1]) {
+            [a[j], a[j + 1]] = [a[j + 1], a[j]];
+          }
+        }
+        steps.push([...a]);
+      }
+      return {sorted: a, steps: steps};
+    }
+
+    sortBtn.addEventListener('click', () => {
+      const input = document.getElementById('numbers').value;
+      const arr = parseNumbers(input);
+      if (arr.length === 0) {
+        output.textContent = 'Please enter valid numbers!';
+        stepsList.innerHTML = '';
+        return;
+      }
+      const {sorted, steps} = bubbleSort(arr);
+      output.textContent = 'Sorted: ' + sorted.join(', ');
+      stepsList.innerHTML = '';
+      if (showSteps.checked) {
+        steps.forEach((s, i) => {
+          const li = document.createElement('li');
+          li.textContent = 'Pass ' + (i+1) + ': ' + s.join(', ');
+          stepsList.appendChild(li);
+        });
+      }
+    });
+
+    randomBtn.addEventListener('click', () => {
+      const arr = Array.from({length: 6}, () => Math.floor(Math.random() * 50));
+      document.getElementById('numbers').value = arr.join(', ');
+      output.textContent = 'Random numbers generated.';
+      stepsList.innerHTML = '';
+    });
+
+    clearBtn.addEventListener('click', () => {
+      document.getElementById('numbers').value = '';
+      output.textContent = 'Cleared.';
+      stepsList.innerHTML = '';
+    });
+  </script>
+</body>
+</html>
