@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 7: Mad Lib</title>
+  <style>
+    /* ---------- General Page Styles ---------- */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+      color: #333;
+    }
+
+    h1 {
+      color: #0066cc;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- Form Styles ---------- */
+    form {
+      background: linear-gradient(145deg, #ffffff, #e6f7ff);
+      display: inline-block;
+      padding: 25px 40px;
+      border-radius: 16px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      margin-bottom: 30px;
+      text-align: left;
+      width: 300px;
+      border: 2px solid #b3e5fc;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #004d80;
+    }
+
+    input {
+      margin-top: 5px;
+      padding: 8px;
+      width: 95%;
+      border: 2px solid #80deea;
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #0288d1;
+      background-color: #e1f5fe;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: linear-gradient(90deg, #007bff, #00bcd4);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #00acc1, #0288d1);
+      transform: scale(1.05);
+    }
+
+    /* ---------- Story Box Styles ---------- */
+    #story {
+      background: #ffffff;
+      display: inline-block;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      width: 70%;
+      margin-top: 20px;
+      text-align: left;
+      border-left: 6px solid #00bcd4;
+      color: #004d40;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    #story h2 {
+      color: #00695c;
+      margin-top: 0;
+    }
+
+    /* ---------- Footer Styles ---------- */
+    footer {
+      margin-top: 50px;
+      background: linear-gradient(145deg, #ffffff, #e0f2f1);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      color: #004d40;
+    }
+
+    footer h3 {
+      color: #00796b;
+      margin-top: 0;
+    }
+
+    code {
+      background: #e0f7fa;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #004d40;
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟 Mad Lib Generator 🌟</h1>
+
+  <form id="madlibForm">
+    <label>Noun:
+      <input type="text" id="noun" required>
+    </label>
+    <label>Adjective:
+      <input type="text" id="adjective" required>
+    </label>
+    <label>Verb:
+      <input type="text" id="verb" required>
+    </label>
+    <label>Place:
+      <input type="text" id="place" required>
+    </label>
+    <label>Plural Noun:
+      <input type="text" id="pluralNoun" required>
+    </label>
+    <button type="submit">✨ Generate Story ✨</button>
+  </form>
+
+  <div id="story"></div>
+
+  <footer>
+    <h3>Addendum</h3>
+    <p>
+      For Lab 7, I created a colorful and interactive Mad Lib Generator using HTML, CSS, and JavaScript.
+      The form takes five user inputs — a noun, adjective, verb, place, and plural noun — and dynamically
+      builds a story on the same page without reloading.
+    </p>
+    <p>
+      I used gradients, shadows, and smooth transitions to make the design bright and fun.
+      The story fades in smoothly when it appears, enhancing the user experience.
+      The “Last updated” footer automatically displays the page’s last modification date.
+    </p>
+
+    <p><strong>Last updated:</strong>
+      <span id="lastModified"></span>
+    </p>
+  </footer>
+
+  <script>
+    // Display last modified date
+    document.getElementById("lastModified").textContent = document.lastModified;
+
+    // Form handling
+    const form = document.getElementById("madlibForm");
+    const storyDiv = document.getElementById("story");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // prevent reload
+
+      const noun = document.getElementById("noun").value;
+      const adjective = document.getElementById("adjective").value;
+      const verb = document.getElementById("verb").value;
+      const place = document.getElementById("place").value;
+      const pluralNoun = document.getElementById("pluralNoun").value;
+
+      const story = `
+        <h2>Your Mad Lib Story</h2>
+        <p>
+          Once upon a time, there was a <strong>${adjective}</strong> <strong>${noun}</strong>
+          who loved to <strong>${verb}</strong> every day in the beautiful land of <strong>${place}</strong>.
+          One sunny afternoon, the ${noun} met a group of <strong>${pluralNoun}</strong> who invited
+          them on a magical adventure. From that day on, ${place} was never the same again!
+        </p>
+      `;
+
+      storyDiv.innerHTML = story;
+      form.reset();
+    });
+  </script>
+</body>
+</html>
