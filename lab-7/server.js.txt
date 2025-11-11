@@ -1,0 +1,50 @@
+// server.js
+const express = require('express')
+const logger = require('morgan')
+const path = require('path')
+const server = express()
+
+server.use(express.urlencoded({ extended: true }))
+server.use(logger('dev'))
+
+// Serve all static files in "public"
+const publicServedFilesPath = path.join(__dirname, 'public')
+server.use(express.static(publicServedFilesPath))
+
+// --------------------
+// Mad Lib POST handler
+// --------------------
+server.post('/ITC505/lab-7/index.html', (req, res) => {
+  const { noun, adjective, verb, place, pluralNoun } = req.body
+
+  // Input validation
+  if (!noun || !adjective || !verb || !place || !pluralNoun) {
+    return res.send(`
+      <h1>Submission Failed</h1>
+      <p>Please fill out ALL fields.</p>
+      <a href="/ITC505/lab-7/index.html">Go Back</a>
+    `)
+  }
+
+  // Construct the Mad Lib story
+  const story = `
+    <h1>Your Mad Lib Story</h1>
+    <p>
+      Once upon a time, there was a very <strong>${adjective}</strong> <strong>${noun}</strong> 
+      who loved to <strong>${verb}</strong> every day in <strong>${place}</strong>. 
+      One day, the ${noun} met a group of ${pluralNoun}, and together they went on an unforgettable adventure!
+    </p>
+    <a href="/ITC505/lab-7/index.html">Create Another Story</a>
+  `
+
+  res.send(story)
+})
+
+// --------------------
+// Start server
+// --------------------
+let port = 80
+if (process.argv[2] === 'local') {
+  port = 8080
+}
+server.listen(port, () => console.log('✅ Ready on localhost!'))
