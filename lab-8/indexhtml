@@ -50,11 +50,13 @@
       color: #b91c1c;
       font-size: 0.85rem;
       margin-top: 2px;
+      min-height: 14px;
     }
     .success {
       color: #166534;
       font-size: 0.9rem;
       margin-top: 8px;
+      min-height: 18px;
     }
     button {
       width: 100%;
@@ -110,98 +112,7 @@
     </form>
   </div>
 
-  <script>
-    // Simple sanitization to help prevent basic XSS in this lab
-    function sanitizeInput(value) {
-      // Encode characters that would break into HTML/JS contexts
-      return value
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#x27;")
-        .replace(/\//g, "&#x2F;");
-    }
-
-    function isValidEmail(email) {
-      // Basic email regex for demo purposes
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
-
-    document.getElementById("registrationForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      // Clear old errors and message
-      const errorIds = [
-        "firstNameError", "lastNameError", "emailError",
-        "passwordError", "confirmPasswordError"
-      ];
-      errorIds.forEach(id => document.getElementById(id).textContent = "");
-      const formMessage = document.getElementById("formMessage");
-      formMessage.textContent = "";
-
-      // Read and sanitize user input
-      const rawFirstName = document.getElementById("firstName").value.trim();
-      const rawLastName = document.getElementById("lastName").value.trim();
-      const rawEmail = document.getElementById("email").value.trim();
-      const rawPassword = document.getElementById("password").value;
-      const rawConfirmPassword = document.getElementById("confirmPassword").value;
-
-      const firstName = sanitizeInput(rawFirstName);
-      const lastName = sanitizeInput(rawLastName);
-      const email = sanitizeInput(rawEmail);
-
-      let hasError = false;
-
-      // Empty field checks
-      if (!firstName) {
-        document.getElementById("firstNameError").textContent = "First name is required.";
-        hasError = true;
-      }
-      if (!lastName) {
-        document.getElementById("lastNameError").textContent = "Last name is required.";
-        hasError = true;
-      }
-      if (!email) {
-        document.getElementById("emailError").textContent = "Email is required.";
-        hasError = true;
-      } else if (!isValidEmail(rawEmail)) {
-        document.getElementById("emailError").textContent = "Please enter a valid email address.";
-        hasError = true;
-      }
-      if (!rawPassword) {
-        document.getElementById("passwordError").textContent = "Password is required.";
-        hasError = true;
-      } else if (rawPassword.length < 8) {
-        document.getElementById("passwordError").textContent = "Password must be at least 8 characters.";
-        hasError = true;
-      }
-      if (!rawConfirmPassword) {
-        document.getElementById("confirmPasswordError").textContent = "Please confirm your password.";
-        hasError = true;
-      } else if (rawPassword !== rawConfirmPassword) {
-        document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
-        hasError = true;
-      }
-
-      // Basic anti-XSS pattern block (for learning, not production-grade)
-      const lowerAll = (rawFirstName + rawLastName + rawEmail).toLowerCase();
-      if (lowerAll.includes("<script") || lowerAll.includes("onerror=") || lowerAll.includes("javascript:")) {
-        document.getElementById("firstNameError").textContent =
-          "Potentially dangerous characters detected in input.";
-        hasError = true;
-      }
-
-      if (hasError) {
-        return;
-      }
-
-      // Show success message safely using textContent (avoids DOM XSS sinks like innerHTML)
-      formMessage.textContent = "Registration successful for " + firstName + " " + lastName + " (" + email + ").";
-
-      // In a real app, here you would submit the safely encoded data to the server via fetch()/XHR
-    });
-  </script>
+  <!-- Link to external JS file -->
+  <script src="script.js"></script>
 </body>
 </html>
