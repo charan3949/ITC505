@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 8 – Secure Registration Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #ffffff;
+      margin-top: 40px;
+      padding: 24px 28px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      max-width: 420px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .field {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    .error {
+      color: #b91c1c;
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+    .success {
+      color: #166534;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #2563eb;
+      color: #ffffff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Secure Registration</h1>
+    <form id="registrationForm" novalidate>
+      <div class="field">
+        <label for="firstName">First Name</label>
+        <input id="firstName" name="firstName" type="text" autocomplete="off">
+        <div class="error" id="firstNameError"></div>
+      </div>
+
+      <div class="field">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" type="text" autocomplete="off">
+        <div class="error" id="lastNameError"></div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="off">
+        <div class="error" id="emailError"></div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password">
+        <div class="error" id="passwordError"></div>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password">
+        <div class="error" id="confirmPasswordError"></div>
+      </div>
+
+      <button type="submit">Register</button>
+      <div id="formMessage" class="success"></div>
+    </form>
+  </div>
+
+  <script>
+    // Simple sanitization to help prevent basic XSS in this lab
+    function sanitizeInput(value) {
+      // Encode characters that would break into HTML/JS contexts
+      return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#x27;")
+        .replace(/\//g, "&#x2F;");
+    }
+
+    function isValidEmail(email) {
+      // Basic email regex for demo purposes
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    document.getElementById("registrationForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      // Clear old errors and message
+      const errorIds = [
+        "firstNameError", "lastNameError", "emailError",
+        "passwordError", "confirmPasswordError"
+      ];
+      errorIds.forEach(id => document.getElementById(id).textContent = "");
+      const formMessage = document.getElementById("formMessage");
+      formMessage.textContent = "";
+
+      // Read and sanitize user input
+      const rawFirstName = document.getElementById("firstName").value.trim();
+      const rawLastName = document.getElementById("lastName").value.trim();
+      const rawEmail = document.getElementById("email").value.trim();
+      const rawPassword = document.getElementById("password").value;
+      const rawConfirmPassword = document.getElementById("confirmPassword").value;
+
+      const firstName = sanitizeInput(rawFirstName);
+      const lastName = sanitizeInput(rawLastName);
+      const email = sanitizeInput(rawEmail);
+
+      let hasError = false;
+
+      // Empty field checks
+      if (!firstName) {
+        document.getElementById("firstNameError").textContent = "First name is required.";
+        hasError = true;
+      }
+      if (!lastName) {
+        document.getElementById("lastNameError").textContent = "Last name is required.";
+        hasError = true;
+      }
+      if (!email) {
+        document.getElementById("emailError").textContent = "Email is required.";
+        hasError = true;
+      } else if (!isValidEmail(rawEmail)) {
+        document.getElementById("emailError").textContent = "Please enter a valid email address.";
+        hasError = true;
+      }
+      if (!rawPassword) {
+        document.getElementById("passwordError").textContent = "Password is required.";
+        hasError = true;
+      } else if (rawPassword.length < 8) {
+        document.getElementById("passwordError").textContent = "Password must be at least 8 characters.";
+        hasError = true;
+      }
+      if (!rawConfirmPassword) {
+        document.getElementById("confirmPasswordError").textContent = "Please confirm your password.";
+        hasError = true;
+      } else if (rawPassword !== rawConfirmPassword) {
+        document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+        hasError = true;
+      }
+
+      // Basic anti-XSS pattern block (for learning, not production-grade)
+      const lowerAll = (rawFirstName + rawLastName + rawEmail).toLowerCase();
+      if (lowerAll.includes("<script") || lowerAll.includes("onerror=") || lowerAll.includes("javascript:")) {
+        document.getElementById("firstNameError").textContent =
+          "Potentially dangerous characters detected in input.";
+        hasError = true;
+      }
+
+      if (hasError) {
+        return;
+      }
+
+      // Show success message safely using textContent (avoids DOM XSS sinks like innerHTML)
+      formMessage.textContent = "Registration successful for " + firstName + " " + lastName + " (" + email + ").";
+
+      // In a real app, here you would submit the safely encoded data to the server via fetch()/XHR
+    });
+  </script>
+</body>
+</html>
